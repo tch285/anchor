@@ -71,7 +71,8 @@ RUN git clone --depth 1 --branch docker --single-branch https://github.com/tch28
  && ./heppy/external/hepmc3/build.sh \
  && ./heppy/external/pythia8/build.sh \
  && ./heppy/cpptools/build.sh
-RUN . /etc/profile.d/z00_lmod.sh \
+RUN date > timestamp \
+ && . /etc/profile.d/z00_lmod.sh \
  && module use /opt/heppy/modules \
  && module load heppy \
  && git clone --depth 1 --branch ceec --single-branch https://github.com/tch285/pyjetty.git \
