@@ -7,7 +7,7 @@ ENV LANG=C.UTF-8
 
 ARG ROOT_BIN=root_v6.32.02.Linux-ubuntu22.04-x86_64-gcc11.4.tar.gz
 
-WORKDIR /opt/apps
+WORKDIR /opt
 
 COPY packages requirements.txt ./
 
@@ -51,10 +51,7 @@ RUN python3 -m venv ${VIRTUAL_ENV} \
  && ${VIRTUAL_ENV}/bin/pip install --no-cache-dir --upgrade pip \
  && ${VIRTUAL_ENV}/bin/pip install --no-cache-dir -r requirements.txt
 ENV PATH=${VIRTUAL_ENV}/bin:/opt/apps/RooUnfold/build:$PATH
-ENV PYTHONPATH=/opt/apps/RooUnfold/build:$PYTHONPATH
-ENV LD_LIBRARY_PATH=/opt/apps/RooUnfold/build:$LD_LIBRARY_PATH
 
-WORKDIR /opt
 RUN git clone --depth 1 --branch docker --single-branch https://github.com/tch285/heppy.git \
  # && ./heppy/external/roounfold/build.sh \
  && ./heppy/external/fastjet/build.sh \
@@ -63,10 +60,10 @@ RUN git clone --depth 1 --branch docker --single-branch https://github.com/tch28
  && ./heppy/external/hepmc3/build.sh \
  && ./heppy/external/pythia8/build.sh \
  && ./heppy/cpptools/build.sh
-RUN date > timestamp \
- && . /etc/profile.d/z00_lmod.sh \
- && module use /opt/heppy/modules \
- && module load heppy \
- && git clone --depth 1 --branch ceec --single-branch https://github.com/tch285/pyjetty.git \
- && ./pyjetty/cpptools/build.sh --tenngen --tglaubermc \
- && echo "#!\\bin\\bash\n. /etc/profile.d/z00_lmod.sh\nmodule use /opt/pyjetty/modules/\nmodule load pyjetty" > /opt/env.sh
+# RUN date > timestamp \
+#  && . /etc/profile.d/z00_lmod.sh \
+#  && module use /opt/heppy/modules \
+#  && module load heppy \
+#  && git clone --depth 1 --branch ceec --single-branch https://github.com/tch285/pyjetty.git \
+#  && ./pyjetty/cpptools/build.sh --tenngen --tglaubermc \
+#  && echo "#!\\bin\\bash\n. /etc/profile.d/z00_lmod.sh\nmodule use /opt/pyjetty/modules/\nmodule load pyjetty" > /opt/env.sh

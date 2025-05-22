@@ -1,0 +1,9 @@
+ca-certificates
+cmake
+g++
+gcc
+make
+bzip2
+locales
+tcl-dev
+rsync
