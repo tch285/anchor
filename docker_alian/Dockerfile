@@ -5,27 +5,27 @@ LABEL maintainer.email="tucker_hwang@berkeley.edu"
 
 ENV LANG=C.UTF-8
 
-ARG ROOT_BIN=root_v6.32.02.Linux-ubuntu22.04-x86_64-gcc11.4.tar.gz
+# ARG ROOT_BIN=root_v6.32.02.Linux-ubuntu22.04-x86_64-gcc11.4.tar.gz
 
 WORKDIR /opt
 
-COPY packages requirements.txt ./
+COPY packages ./
 
 RUN apt-get update -qq \
  && ln -sf /usr/share/zoneinfo/UTC /etc/localtime \
- && apt-get -y install --no-install-recommends $(cat packages) wget\
- && rm -rf /var/lib/apt/lists/*\
- && wget https://root.cern/download/${ROOT_BIN} \
- && tar -xzvf ${ROOT_BIN} \
- && rm -f ${ROOT_BIN} \
- && echo /opt/root/lib >> /etc/ld.so.conf \
- && ldconfig
+ && apt-get -y install --no-install-recommends $(cat packages) wget \
+ && rm -rf /var/lib/apt/lists/*
+#  && wget https://root.cern/download/${ROOT_BIN} \
+#  && tar -xzvf ${ROOT_BIN} \
+#  && rm -f ${ROOT_BIN} \
+#  && echo /opt/root/lib >> /etc/ld.so.conf \
+#  && ldconfig
 # RUN yes | unminimize
 
-ENV ROOTSYS=/opt/apps/root
-ENV PATH=$ROOTSYS/bin:$PATH
-ENV PYTHONPATH=$ROOTSYS/lib:$PYTHONPATH
-ENV CLING_STANDARD_PCH=none
+# ENV ROOTSYS=/opt/root
+# ENV PATH=$ROOTSYS/bin:$PATH
+# ENV PYTHONPATH=$ROOTSYS/lib:$PYTHONPATH
+# ENV CLING_STANDARD_PCH=none
 
 RUN wget https://sourceforge.net/projects/lmod/files/lua-5.1.4.9.tar.bz2 \
  && tar xf lua-5.1.4.9.tar.bz2 \
@@ -45,21 +45,25 @@ RUN wget https://sourceforge.net/projects/lmod/files/lua-5.1.4.9.tar.bz2 \
  && make install \
  && ln -s /opt/apps/lmod/lmod/init/profile /etc/profile.d/z00_lmod.sh
 
-ENV VIRTUAL_ENV=/opt/.venv
-RUN python3 -m venv ${VIRTUAL_ENV} \
- && . ${VIRTUAL_ENV}/bin/activate \
- && ${VIRTUAL_ENV}/bin/pip install --no-cache-dir --upgrade pip \
- && ${VIRTUAL_ENV}/bin/pip install --no-cache-dir -r requirements.txt
-ENV PATH=${VIRTUAL_ENV}/bin:/opt/apps/RooUnfold/build:$PATH
+# ENV VIRTUAL_ENV=/opt/.venv
+# RUN python3 -m venv ${VIRTUAL_ENV} \
+#  && . ${VIRTUAL_ENV}/bin/activate \
+#  && ${VIRTUAL_ENV}/bin/pip install --no-cache-dir --upgrade pip \
+#  && ${VIRTUAL_ENV}/bin/pip install --no-cache-dir -r requirements.txt
+# ENV PATH=${VIRTUAL_ENV}/bin:/opt/apps/RooUnfold/build:$PATH
 
-RUN git clone --depth 1 --branch docker --single-branch https://github.com/tch285/heppy.git \
- # && ./heppy/external/roounfold/build.sh \
- && ./heppy/external/fastjet/build.sh \
- && ./heppy/external/lhapdf6/build.sh \
- && ./heppy/external/hepmc2/build.sh \
- && ./heppy/external/hepmc3/build.sh \
- && ./heppy/external/pythia8/build.sh \
- && ./heppy/cpptools/build.sh
+RUN . /etc/profile.d/z00_lmod.sh \
+ && git clone --depth 1 --branch root-option --single-branch https://github.com/tch285/yasp.git
+#  && ./yasp/yaspenv.sh \
+#   "python3 -m pip install numpy tqdm pyyaml \
+#   && yasp -mi bundle/hepbase \
+#   && module use yasp/software/modules \
+#   && module load yasp \
+#   && git clone --depth 1 --branch main --single-branch https://github.com/matplo/heppyy.git \
+#   && ./heppyy/install_with_yasp.sh \
+#   && module load heppyy/current \
+#   && git clone --depth 1 --branch geec --single-branch https://github.com/tch285/alian.git \
+#   && ./alian/install_with_yasp.sh"
 # RUN date > timestamp \
 #  && . /etc/profile.d/z00_lmod.sh \
 #  && module use /opt/heppy/modules \

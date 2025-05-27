@@ -1,3 +1,7 @@
+autoconf
+automake
+libtool
+unzip
 cmake
 ca-certificates
 curl
