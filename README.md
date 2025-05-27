@@ -6,3 +6,4 @@ Dockerfile storage and version tracking for:
 3. `docker_roounfold`: ROOT + RooUnfold
 4. `docker_herwig`: Herwig 7.3
 5. `docker_hwconv`: HEPMC -> Berkeley Tree conversion
+6. `docker_alian`: alian + heppyy + yasp
