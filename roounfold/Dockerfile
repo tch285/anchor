@@ -1,7 +1,7 @@
 FROM ubuntu:24.04
 
-LABEL maintainer.name="ROOT team"
-LABEL maintainer.email="root-dev@cern.ch"
+LABEL maintainer.name="Tucker Hwang"
+LABEL maintainer.email="tucker_hwang@berkeley.edu"
 
 ENV LANG=C.UTF-8
 
