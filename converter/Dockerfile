@@ -1,0 +1,33 @@
+FROM ubuntu:24.04
+
+LABEL maintainer.name="Tucker Hwang"
+LABEL maintainer.email="tucker_hwang@berkeley.edu"
+
+ENV LANG=C.UTF-8
+
+ARG ROOT_BIN=root_v6.32.04.Linux-ubuntu24.04-x86_64-gcc13.2.tar.gz
+
+WORKDIR /opt
+
+COPY packages packages
+
+RUN apt-get update -qq \
+ && ln -sf /usr/share/zoneinfo/UTC /etc/localtime \
+ && apt-get -y install --no-install-recommends $(cat packages) wget\
+ && rm -rf /var/lib/apt/lists/*\
+ && wget https://root.cern/download/${ROOT_BIN} \
+ && tar -xzvf ${ROOT_BIN} \
+ && rm -f ${ROOT_BIN} \
+ && echo /opt/root/lib >> /etc/ld.so.conf \
+ && ldconfig
+
+ENV ROOTSYS=/opt/root
+ENV PATH=$ROOTSYS/bin:$PATH
+ENV PYTHONPATH=$ROOTSYS/lib:$PYTHONPATH
+ENV CLING_STANDARD_PCH=none
+
+# CMD ["root", "-b"]
+
+RUN git clone --depth 1 --branch master --single-branch https://github.com/KirillVNaumov/AO2DToBerkeleyTreeConverter.git \
+ && cd AO2DToBerkeleyTreeConverter \
+ && make BUILD=debug
