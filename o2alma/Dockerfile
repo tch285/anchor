@@ -11,4 +11,3 @@ RUN dnf install -y epel-release dnf-plugins-core && \
     dnf install -y $(cat /home/packages) && \
     dnf clean all && \
     rm -rf /var/cache/yum
-
