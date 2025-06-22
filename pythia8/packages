@@ -1,0 +1,7 @@
+make
+g++
+wget
+ca-certificates
+python3-dev
+python-dev-is-python3
+vim
