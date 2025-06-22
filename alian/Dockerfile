@@ -5,9 +5,9 @@ LABEL maintainer.email="tucker_hwang@berkeley.edu"
 
 ENV LANG=C.UTF-8
 
-WORKDIR /opt
+WORKDIR /opt/apps
 
-COPY packages env.sh ./
+COPY packages entrypoint.sh ./
 
 RUN apt-get update -qq \
  && ln -sf /usr/share/zoneinfo/UTC /etc/localtime \
@@ -31,17 +31,19 @@ RUN apt-get update -qq \
  && make install \
  && ln -s /opt/apps/lmod/lmod/init/profile /etc/profile.d/z00_lmod.sh
 
- RUN . /etc/profile.d/z00_lmod.sh \
- && git clone --depth 1 --branch root-option --single-branch https://github.com/tch285/yasp.git \
+WORKDIR /opt
+RUN . /etc/profile.d/z00_lmod.sh \
+ && git clone --depth 1 --branch dev --single-branch https://github.com/tch285/yasp.git \
  && ./yasp/yaspenv.sh \
- "python3 -m pip install --no-cache-dir numpy tqdm pyyaml \
- && yasp -mi bundle/hepbase --yasp-define n_cores=2\
+   "python3 -m pip install --no-cache-dir numpy tqdm pyyaml \
+ && yasp -mi bundle/hepbase --yasp-define n_cores=2 use_precomp_root=ubuntu22.04\
  && module use yasp/software/modules \
- && module load yasp bundle/hepbase\
+ && module load yasp bundle/hepbase \
  && git clone --depth 1 --branch main --single-branch https://github.com/matplo/heppyy.git \
  && ./heppyy/install_with_yasp.sh"
 ADD https://api.github.com/repos/tch285/alian/git/refs/heads/geec latest_commit
-RUN ./yasp/yaspenv.sh \
-  ". /opt/env.sh \
-  && git clone --depth 1 --branch geec --single-branch https://github.com/tch285/alian.git \
-  && ./alian/install_with_yasp.sh"
+RUN . /etc/profile.d/z00_lmod.sh \
+ && ./yasp/yaspenv.sh \
+   "module load heppyy bundle/hepbase \
+ && git clone --depth 1 --branch geec --single-branch https://github.com/tch285/alian.git \
+ && ./alian/install_with_yasp.sh"
