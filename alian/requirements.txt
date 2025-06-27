@@ -3,4 +3,6 @@ numpy
 pandas
 uproot
 tqdm
-# particle
+particle
+matplotlib
+scipy

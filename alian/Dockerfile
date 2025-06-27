@@ -5,14 +5,15 @@ LABEL maintainer.email="tucker_hwang@berkeley.edu"
 
 ENV LANG=C.UTF-8
 
-WORKDIR /opt/apps
+WORKDIR /opt
 
-COPY packages entrypoint.sh ./
+COPY packages entrypoint.sh requirements.txt apps/
 
 RUN apt-get update -qq \
  && ln -sf /usr/share/zoneinfo/UTC /etc/localtime \
- && apt-get -y install --no-install-recommends $(cat packages) wget \
+ && apt-get -y install --no-install-recommends $(cat apps/packages) wget \
  && rm -rf /var/lib/apt/lists/* \
+ && cd /opt/apps \
  && wget https://sourceforge.net/projects/lmod/files/lua-5.1.4.9.tar.bz2 \
  && tar xf lua-5.1.4.9.tar.bz2 \
  && rm -f lua-5.1.4.9.tar.bz2 \
@@ -29,14 +30,13 @@ RUN apt-get update -qq \
  && cd Lmod-8.7 \
  && ./configure --prefix=/opt/apps \
  && make install \
- && ln -s /opt/apps/lmod/lmod/init/profile /etc/profile.d/z00_lmod.sh
-
-WORKDIR /opt
-RUN . /etc/profile.d/z00_lmod.sh \
+ && ln -s /opt/apps/lmod/lmod/init/profile /etc/profile.d/z00_lmod.sh \
+ && cd /opt \
+ && . /etc/profile.d/z00_lmod.sh \
  && git clone --depth 1 --branch dev --single-branch https://github.com/tch285/yasp.git \
  && ./yasp/yaspenv.sh \
-   "python3 -m pip install --no-cache-dir numpy tqdm pyyaml \
- && yasp -mi bundle/hepbase --yasp-define n_cores=2 use_precomp_root=ubuntu22.04\
+   "python3 -m pip install --no-cache-dir -r apps/requirements.txt \
+ && yasp -mi bundle/hepbase --opt rootspec=ubuntu22.04 n_cores=2 \
  && module use yasp/software/modules \
  && module load yasp bundle/hepbase \
  && git clone --depth 1 --branch main --single-branch https://github.com/matplo/heppyy.git \
@@ -47,3 +47,5 @@ RUN . /etc/profile.d/z00_lmod.sh \
    "module load heppyy bundle/hepbase \
  && git clone --depth 1 --branch geec --single-branch https://github.com/tch285/alian.git \
  && ./alian/install_with_yasp.sh"
+ENTRYPOINT [ "/opt/apps/entrypoint.sh" ]
+CMD [ "/usr/bin/bash", "-l" ]
