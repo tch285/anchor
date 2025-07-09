@@ -5,7 +5,7 @@ LABEL maintainer.email="tucker_hwang@berkeley.edu"
 
 ENV LANG=C.UTF-8
 
-ARG ROOT_BIN=root_v6.36.00.Linux-ubuntu24.04-x86_64-gcc13.3.tar.gz
+ARG ROOT_BIN=root_v6.36.02.Linux-ubuntu24.04-x86_64-gcc13.3.tar.gz
 
 WORKDIR /opt
 
