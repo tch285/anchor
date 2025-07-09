@@ -52,3 +52,6 @@ srm-ifce-dev
 unixodbc-dev
 python-is-python3
 xrootd-plugins
+
+python3-venv
+python3-pip
