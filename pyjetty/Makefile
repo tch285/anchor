@@ -3,7 +3,7 @@ IMAGE ?= pyjetty
 TAG   ?= latest
 
 build:
-	docker build -t $(IMAGE):$(TAG) .
+	docker build -t $(REPO)/$(IMAGE):$(TAG) .
 push:
 	docker push $(REPO)/$(IMAGE):$(TAG)
 run:
