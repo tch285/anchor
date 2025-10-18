@@ -7,11 +7,11 @@ ENV LANG=C.UTF-8
 
 WORKDIR /opt
 
-COPY packages /opt/apps/
+COPY packages-22.04 /opt/apps/
 
 RUN apt-get update -qq \
  && ln -sf /usr/share/zoneinfo/UTC /etc/localtime \
- && apt-get -y install --no-install-recommends $(cat apps/packages) wget \
+ && apt-get -y install --no-install-recommends $(cat apps/packages-22.04) wget \
  && rm -rf /var/lib/apt/lists/* \
  && cd /opt/apps \
  && wget https://sourceforge.net/projects/lmod/files/lua-5.1.4.9.tar.bz2 \
