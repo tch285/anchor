@@ -8,5 +8,7 @@ push:
 	docker push $(REPO)/$(IMAGE):$(TAG)
 run:
 	docker run -it --rm $(REPO)/$(IMAGE):$(TAG)
+pull:
+	ssh nersc "shifterimg pull $(REPO)/$(IMAGE):$(TAG)"
 
-.PHONY: build push run
+.PHONY: build push run pull
