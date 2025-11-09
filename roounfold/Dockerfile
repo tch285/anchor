@@ -30,7 +30,7 @@ RUN cd /opt/apps \
  && wget https://root.cern/download/${ROOT_BIN} \
  && tar -xzvf ${ROOT_BIN} \
  && rm -f ${ROOT_BIN} \
- && echo /opt/root/lib >> /etc/ld.so.conf \
+ && echo /opt/apps/root/lib >> /etc/ld.so.conf \
  && ldconfig \
  && yes | unminimize \
  && git clone --depth 1 --branch 3.0.5 https://gitlab.cern.ch/RooUnfold/RooUnfold.git \
