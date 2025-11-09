@@ -1,0 +1,4 @@
+pyyaml
+numpy
+uproot
+tqdm
