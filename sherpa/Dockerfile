@@ -6,7 +6,7 @@ LABEL maintainer.email="tucker_hwang@berkeley.edu"
 ENV LANG=C.UTF-8
 
 # ARG ROOT_BIN=root_v6.32.02.Linux-ubuntu22.04-x86_64-gcc11.4.tar.gz
-ARG SHERPA_VER=3.0.x
+ARG SHERPA_VER=3.0.3
 ARG SHERPA_BR=3-0-x
 ARG OPENLOOPS_VER=OpenLoops-2.1.5
 ARG PYTHIA_VER=8310
@@ -57,7 +57,9 @@ RUN apt-get update -qq \
  && gmake install \
  && cd ${WORKDIR} \
  && rm -rf pythia${PYTHIA_VER} \
- && git clone --single-branch -b rel-${SHERPA_BR} https://gitlab.com/sherpa-team/sherpa.git \
+#  && git clone --single-branch -b rel-${SHERPA_BR} https://gitlab.com/sherpa-team/sherpa.git \
+ && wget https://gitlab.com/sherpa-team/sherpa/-/archive/v${SHERPA_VER}/sherpa-v${SHERPA_VER}.tar.gz \
+ && tar xvzf sherpa-v${SHERPA_VER}.tar.gz && rm sherpa-v${SHERPA_VER}.tar.gz && mv sherpa-v${SHERPA_VER} sherpa\
  && cd sherpa \
  && mkdir sherpa-build \
  && cd sherpa-build \

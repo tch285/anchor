@@ -5,7 +5,7 @@ BEAM_ENERGIES: 2510
 TAGS:
   LOOPGEN: OpenLoops
 
-# settings fot ME generators
+# settings for ME generators
 ME_GENERATORS: [Amegic, Comix, $(LOOPGEN)]
 
 EVENT_OUTPUT:
@@ -13,11 +13,11 @@ EVENT_OUTPUT:
 
 FRAGMENTATION: Pythia8
 PYTHIA8:
-  PARAMETERS:
-    - StringZ:aLund: 0.68
-    - StringZ:bLund: 0.98
-  DECAYS: true
-  SHERPA_MASSES: false
+  # PARAMETERS:
+  #   - StringZ:aLund: 0.68
+  #   - StringZ:bLund: 0.98
+  DECAYS: false
+  SHERPA_MASSES: true
   
 # scale definitions
 # MEPS:
