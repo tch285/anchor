@@ -45,8 +45,8 @@ PROCESSES:
     Enhance_Function: VAR{sqr(PPerp2(p[2]))}
 
 SELECTORS:
-  - FastjetFinder:
-      Algorithm: antikt
-      N: 1
-      DR: 0.4
-      PTMin: 10
+- FastjetFinder:
+    Algorithm: antikt
+    N: 1
+    DR: 0.4
+    PTMin: 10
