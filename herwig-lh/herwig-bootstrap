@@ -1394,315 +1394,293 @@ if build_needed('herwig',opts.herwig_ver):
 if build_needed('thep8i'):
     branch="2.0.3" #"master"
     checkout(src_dir,"TheP8I","",opts.thep8i_repo,branch,'git')
-    # patch("TheP8I",
-# b"""\
-# diff configure.ac
-# --- a/configure.ac      2024-06-19 23:01:58.629664006 +0200
-# +++ b/configure.ac      2024-06-19 23:00:26.239679450 +0200
-# @@ -78,15 +78,14 @@
+    patch("TheP8I",
+b"""\
+diff include/TheP8I/Hadronization/ColourReconnection-init.h
+--- a/include/TheP8I/Hadronization/ColourReconnection-init.h	1970-01-01 01:00:00.000000000 +0100
++++ b/include/TheP8I/Hadronization/ColourReconnection-init.h	2024-06-05 16:33:45.760474238 +0100
+@@ -0,0 +1,17 @@
++    CR_reconnect(0),
++    CR_mode(1),
++    CR_m0(0.3),
++    CR_junctionCorrection(1.2),
++    CR_nColours(9),
++    CR_sameNeighbourColours(0),
++    CR_allowJunctions(1),
++    CR_lambdaForm(0),
++    CR_allowDoubleJunRem(1),
++    CR_timeDilationMode(2),
++    CR_timeDilationPar(0.18),
++    CR_m2Lambda(1.0),
++    CR_fracGluon(1.0),
++    CR_dLambdaCut(0.0),
++    CR_flipMode(0),
++    CR_forceHadronLevel(0),
++    BR_remnantMode(0),
+diff include/TheP8I/Hadronization/ColourReconnection-input.h
+--- a/include/TheP8I/Hadronization/ColourReconnection-input.h	1970-01-01 01:00:00.000000000 +0100
++++ b/include/TheP8I/Hadronization/ColourReconnection-input.h	2024-06-05 16:33:45.760474238 +0100
+@@ -0,0 +1,17 @@
++    >> CR_reconnect
++    >> CR_mode
++    >> CR_m0
++    >> CR_junctionCorrection
++    >> CR_nColours
++    >> CR_sameNeighbourColours
++    >> CR_allowJunctions
++    >> CR_lambdaForm
++    >> CR_allowDoubleJunRem
++    >> CR_timeDilationMode
++    >> CR_timeDilationPar
++    >> CR_m2Lambda
++    >> CR_fracGluon
++    >> CR_dLambdaCut
++    >> CR_flipMode
++    >> CR_forceHadronLevel
++    >> BR_remnantMode
+diff include/TheP8I/Hadronization/ColourReconnection-interfaces.h
+--- a/include/TheP8I/Hadronization/ColourReconnection-interfaces.h	1970-01-01 01:00:00.000000000 +0100
++++ b/include/TheP8I/Hadronization/ColourReconnection-interfaces.h	2024-06-05 16:33:45.760474238 +0100
+@@ -0,0 +1,101 @@
++static Parameter<StringFragmentation,int> interfaceCR_reconnect
++  ("CRreconnect",
++   "  Colour Reconnection reconnet parameter.  ",
++   &StringFragmentation::CR_reconnect, 0, 0, 1,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,int> interfaceCR_mode
++  ("CRmode",
++   "  Colour Reconnection mode parameter.  ",
++   &StringFragmentation::CR_mode, 1, 0, 4,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,double> interfaceCR_m0
++  ("CRm0",
++   " QCD Colour Reconnection m0 parameter.  ",
++   &StringFragmentation::CR_m0, 0.3, 0.1, 5.0,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,double> interfaceCR_junctionCorrection
++  ("CRjunctionCorrection",
++   " QCD Colour Reconnection junctionCorrection parameter.  ",
++   &StringFragmentation::CR_junctionCorrection, 1.2, 0.01, 10.0,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,int> interfaceCR_nColours
++  ("CRnColours",
++   " QCD Colour Reconnection nColours mode.  ",
++   &StringFragmentation::CR_nColours, 9, 1, 30,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,int> interfaceCR_sameNeighbourColours
++  ("CRsameNeighbourColours",
++   " QCD Colour Reconnection sameNeighbourColours flag.  ",
++   &StringFragmentation::CR_sameNeighbourColours, 0, 0, 1,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,int> interfaceCR_allowJunctions
++  ("CRallowJunctions",
++   " QCD Colour Reconnection allowJunctions flag.  ",
++   &StringFragmentation::CR_allowJunctions, 1, 0, 1,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,int> interfaceCR_lambdaForm
++  ("CRlambdaForm",
++   " QCD Colour Reconnection lambdaForm mode.  ",
++   &StringFragmentation::CR_lambdaForm, 0, 0, 2,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,int> interfaceCR_allowDoubleJunRem
++  ("CRallowDoubleJunRem",
++   " QCD Colour Reconnection allowDoubleJunRem flag.  ",
++   &StringFragmentation::CR_allowDoubleJunRem, 1, 0, 1,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,int> interfaceCR_timeDilationMode
++  ("CRtimeDilationMode",
++   " QCD Colour Reconnection timeDilationMode mode.  ",
++   &StringFragmentation::CR_timeDilationMode, 2, 0, 5,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,double> interfaceCR_timeDilationPar
++  ("CRtimeDilationPar",
++   " QCD Colour Reconnection timeDilationPar parameter.  ",
++   &StringFragmentation::CR_timeDilationPar, 0.18, 0.0, 100.0,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,double> interfaceCR_m2Lambda
++  ("CRm2Lambda",
++   "  Colour Reconnection m2Lambda parameter.  ",
++   &StringFragmentation::CR_m2Lambda, 1.0, 0.25, 16.0,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,double> interfaceCR_fracGluon
++  ("CRfracGluon",
++   "  Colour Reconnection fracGluon parameter.  ",
++   &StringFragmentation::CR_fracGluon, 1.0, 0.0, 1.0,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,double> interfaceCR_dLambdaCut
++  ("CRdLambdaCut",
++   "  Colour Reconnection dLambdaCut parameter.  ",
++   &StringFragmentation::CR_dLambdaCut, 0.0, 0.0, 10.0,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,int> interfaceCR_flipMode
++  ("CRflipMode",
++   "  Colour Reconnection flipMode parameter.  ",
++   &StringFragmentation::CR_flipMode, 0, 0, 4,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,int> interfaceCR_forceHadronLevel
++  ("CRforceHadronLevel",
++   "  Colour Reconnection forceHadronLevelCR parameter.  ",
++   &StringFragmentation::CR_forceHadronLevel, 1, 0, 1,
++   true, false, Interface::limited);
++
++static Parameter<StringFragmentation,int> interfaceBR_remnantMode
++  ("BRremnantMode",
++   "  Beam Remnants remnantMode mode.  ",
++   &StringFragmentation::BR_remnantMode, 0, 0, 1,
++   true, false, Interface::limited);
+diff include/TheP8I/Hadronization/ColourReconnection-output.h
+--- a/include/TheP8I/Hadronization/ColourReconnection-output.h	1970-01-01 01:00:00.000000000 +0100
++++ b/include/TheP8I/Hadronization/ColourReconnection-output.h	2024-06-05 16:33:45.760474238 +0100
+@@ -0,0 +1,17 @@
++    << CR_reconnect
++    << CR_mode
++    << CR_m0
++    << CR_junctionCorrection
++    << CR_nColours
++    << CR_sameNeighbourColours
++    << CR_allowJunctions
++    << CR_lambdaForm
++    << CR_allowDoubleJunRem
++    << CR_timeDilationMode
++    << CR_timeDilationPar
++    << CR_m2Lambda
++    << CR_fracGluon
++    << CR_dLambdaCut
++    << CR_flipMode
++    << CR_forceHadronLevel
++    << BR_remnantMode
+diff include/TheP8I/Hadronization/StringFragmentation.h
+--- a/include/TheP8I/Hadronization/StringFragmentation.h	2024-06-05 16:25:33.790731430 +0100
++++ b/include/TheP8I/Hadronization/StringFragmentation.h	2024-06-05 16:33:33.750484886 +0100
+@@ -298,6 +298,45 @@
+     // Keep track of how many events we already hadronized using this object, in order to clean up
+     int nev;
 
-#  PYTHIA8_VERSION=` grep -oP '[[0-9]][[.]]([[0-9]]+)' $PYTHIA8_XMLDIR/Version.xml`
-#  PYTHIA8_VERSION_INTEGER=` grep -oP '[[0-9]][[.]]([[0-9]]+)'  $PYTHIA8_XMLDIR/Version.xml | tr -d .`
-# -if [[ "$PYTHIA8_VERSION_INTEGER" -gt "8306" ]]; then
-# +if [[ "$PYTHIA8_VERSION_INTEGER" -lt "8308" ]]; then
-# +AC_MSG_ERROR([WARNING: TheP8I requires Pythai8 version > 8307 for installation.])
-# +fi
-#  LDFLAGS="$LDFLAGS  -pthread"
-#  PYTHIA8_CPPFLAGS="$PYTHIA8_CPPFLAGS  -pthread"
-#  echo "Threading is required for Pythia8 version $PYTHIA8_VERSION_INTEGER"
-#  echo "LDFLAGS=$LDFLAGS"
-#  echo "PYTHIA8_CPPFLAGS=$PYTHIA8_CPPFLAGS"
-# -else
-# -echo "No threading is required for Pythia8 version $PYTHIA8_VERSION_INTEGER"
-# -fi
-#  save_LDFLAGS="$LDFLAGS"
-#  save_LIBS="$LIBS"
-#  save_CPPFLAGS="$CPPFLAGS"
-# diff include/TheP8I/Hadronization/ColourReconnection-init.h
-# --- a/include/TheP8I/Hadronization/ColourReconnection-init.h	1970-01-01 01:00:00.000000000 +0100
-# +++ b/include/TheP8I/Hadronization/ColourReconnection-init.h	2024-06-05 16:33:45.760474238 +0100
-# @@ -0,0 +1,17 @@
-# +    CR_reconnect(0),
-# +    CR_mode(1),
-# +    CR_m0(0.3),
-# +    CR_junctionCorrection(1.2),
-# +    CR_nColours(9),
-# +    CR_sameNeighbourColours(0),
-# +    CR_allowJunctions(1),
-# +    CR_lambdaForm(0),
-# +    CR_allowDoubleJunRem(1),
-# +    CR_timeDilationMode(2),
-# +    CR_timeDilationPar(0.18),
-# +    CR_m2Lambda(1.0),
-# +    CR_fracGluon(1.0),
-# +    CR_dLambdaCut(0.0),
-# +    CR_flipMode(0),
-# +    CR_forceHadronLevel(0),
-# +    BR_remnantMode(0),
-# diff include/TheP8I/Hadronization/ColourReconnection-input.h
-# --- a/include/TheP8I/Hadronization/ColourReconnection-input.h	1970-01-01 01:00:00.000000000 +0100
-# +++ b/include/TheP8I/Hadronization/ColourReconnection-input.h	2024-06-05 16:33:45.760474238 +0100
-# @@ -0,0 +1,17 @@
-# +    >> CR_reconnect
-# +    >> CR_mode
-# +    >> CR_m0
-# +    >> CR_junctionCorrection
-# +    >> CR_nColours
-# +    >> CR_sameNeighbourColours
-# +    >> CR_allowJunctions
-# +    >> CR_lambdaForm
-# +    >> CR_allowDoubleJunRem
-# +    >> CR_timeDilationMode
-# +    >> CR_timeDilationPar
-# +    >> CR_m2Lambda
-# +    >> CR_fracGluon
-# +    >> CR_dLambdaCut
-# +    >> CR_flipMode
-# +    >> CR_forceHadronLevel
-# +    >> BR_remnantMode
-# diff include/TheP8I/Hadronization/ColourReconnection-interfaces.h
-# --- a/include/TheP8I/Hadronization/ColourReconnection-interfaces.h	1970-01-01 01:00:00.000000000 +0100
-# +++ b/include/TheP8I/Hadronization/ColourReconnection-interfaces.h	2024-06-05 16:33:45.760474238 +0100
-# @@ -0,0 +1,101 @@
-# +static Parameter<StringFragmentation,int> interfaceCR_reconnect
-# +  ("CRreconnect",
-# +   "  Colour Reconnection reconnet parameter.  ",
-# +   &StringFragmentation::CR_reconnect, 0, 0, 1,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,int> interfaceCR_mode
-# +  ("CRmode",
-# +   "  Colour Reconnection mode parameter.  ",
-# +   &StringFragmentation::CR_mode, 1, 0, 4,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,double> interfaceCR_m0
-# +  ("CRm0",
-# +   " QCD Colour Reconnection m0 parameter.  ",
-# +   &StringFragmentation::CR_m0, 0.3, 0.1, 5.0,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,double> interfaceCR_junctionCorrection
-# +  ("CRjunctionCorrection",
-# +   " QCD Colour Reconnection junctionCorrection parameter.  ",
-# +   &StringFragmentation::CR_junctionCorrection, 1.2, 0.01, 10.0,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,int> interfaceCR_nColours
-# +  ("CRnColours",
-# +   " QCD Colour Reconnection nColours mode.  ",
-# +   &StringFragmentation::CR_nColours, 9, 1, 30,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,int> interfaceCR_sameNeighbourColours
-# +  ("CRsameNeighbourColours",
-# +   " QCD Colour Reconnection sameNeighbourColours flag.  ",
-# +   &StringFragmentation::CR_sameNeighbourColours, 0, 0, 1,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,int> interfaceCR_allowJunctions
-# +  ("CRallowJunctions",
-# +   " QCD Colour Reconnection allowJunctions flag.  ",
-# +   &StringFragmentation::CR_allowJunctions, 1, 0, 1,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,int> interfaceCR_lambdaForm
-# +  ("CRlambdaForm",
-# +   " QCD Colour Reconnection lambdaForm mode.  ",
-# +   &StringFragmentation::CR_lambdaForm, 0, 0, 2,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,int> interfaceCR_allowDoubleJunRem
-# +  ("CRallowDoubleJunRem",
-# +   " QCD Colour Reconnection allowDoubleJunRem flag.  ",
-# +   &StringFragmentation::CR_allowDoubleJunRem, 1, 0, 1,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,int> interfaceCR_timeDilationMode
-# +  ("CRtimeDilationMode",
-# +   " QCD Colour Reconnection timeDilationMode mode.  ",
-# +   &StringFragmentation::CR_timeDilationMode, 2, 0, 5,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,double> interfaceCR_timeDilationPar
-# +  ("CRtimeDilationPar",
-# +   " QCD Colour Reconnection timeDilationPar parameter.  ",
-# +   &StringFragmentation::CR_timeDilationPar, 0.18, 0.0, 100.0,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,double> interfaceCR_m2Lambda
-# +  ("CRm2Lambda",
-# +   "  Colour Reconnection m2Lambda parameter.  ",
-# +   &StringFragmentation::CR_m2Lambda, 1.0, 0.25, 16.0,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,double> interfaceCR_fracGluon
-# +  ("CRfracGluon",
-# +   "  Colour Reconnection fracGluon parameter.  ",
-# +   &StringFragmentation::CR_fracGluon, 1.0, 0.0, 1.0,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,double> interfaceCR_dLambdaCut
-# +  ("CRdLambdaCut",
-# +   "  Colour Reconnection dLambdaCut parameter.  ",
-# +   &StringFragmentation::CR_dLambdaCut, 0.0, 0.0, 10.0,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,int> interfaceCR_flipMode
-# +  ("CRflipMode",
-# +   "  Colour Reconnection flipMode parameter.  ",
-# +   &StringFragmentation::CR_flipMode, 0, 0, 4,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,int> interfaceCR_forceHadronLevel
-# +  ("CRforceHadronLevel",
-# +   "  Colour Reconnection forceHadronLevelCR parameter.  ",
-# +   &StringFragmentation::CR_forceHadronLevel, 1, 0, 1,
-# +   true, false, Interface::limited);
-# +
-# +static Parameter<StringFragmentation,int> interfaceBR_remnantMode
-# +  ("BRremnantMode",
-# +   "  Beam Remnants remnantMode mode.  ",
-# +   &StringFragmentation::BR_remnantMode, 0, 0, 1,
-# +   true, false, Interface::limited);
-# diff include/TheP8I/Hadronization/ColourReconnection-output.h
-# --- a/include/TheP8I/Hadronization/ColourReconnection-output.h	1970-01-01 01:00:00.000000000 +0100
-# +++ b/include/TheP8I/Hadronization/ColourReconnection-output.h	2024-06-05 16:33:45.760474238 +0100
-# @@ -0,0 +1,17 @@
-# +    << CR_reconnect
-# +    << CR_mode
-# +    << CR_m0
-# +    << CR_junctionCorrection
-# +    << CR_nColours
-# +    << CR_sameNeighbourColours
-# +    << CR_allowJunctions
-# +    << CR_lambdaForm
-# +    << CR_allowDoubleJunRem
-# +    << CR_timeDilationMode
-# +    << CR_timeDilationPar
-# +    << CR_m2Lambda
-# +    << CR_fracGluon
-# +    << CR_dLambdaCut
-# +    << CR_flipMode
-# +    << CR_forceHadronLevel
-# +    << BR_remnantMode
-# diff include/TheP8I/Hadronization/StringFragmentation.h
-# --- a/include/TheP8I/Hadronization/StringFragmentation.h	2024-06-05 16:25:33.790731430 +0100
-# +++ b/include/TheP8I/Hadronization/StringFragmentation.h	2024-06-05 16:33:33.750484886 +0100
-# @@ -298,6 +298,45 @@
-#      // Keep track of how many events we already hadronized using this object, in order to clean up
-#      int nev;
++    /**
++     * Colour Reconnection parameters
++     */
++    int CR_reconnect;
++
++    int CR_mode;
++
++    // CR mode = 1 parameters
++    double CR_m0;
++
++    double CR_junctionCorrection;
++
++    int CR_nColours;
++
++    int CR_sameNeighbourColours;
++
++    int CR_allowJunctions;
++
++    int CR_lambdaForm;
++
++    int CR_allowDoubleJunRem;
++
++    int CR_timeDilationMode;
++
++    double CR_timeDilationPar;
++
++    // CR mode = 2 parameters
++    double CR_m2Lambda;
++
++    double CR_fracGluon;
++
++    double CR_dLambdaCut;
++
++    int CR_flipMode;
++
++    int CR_forceHadronLevel;
++
++    int BR_remnantMode;
++
+     void dofinish();
 
-# +    /**
-# +     * Colour Reconnection parameters
-# +     */
-# +    int CR_reconnect;
-# +
-# +    int CR_mode;
-# +
-# +    // CR mode = 1 parameters
-# +    double CR_m0;
-# +
-# +    double CR_junctionCorrection;
-# +
-# +    int CR_nColours;
-# +
-# +    int CR_sameNeighbourColours;
-# +
-# +    int CR_allowJunctions;
-# +
-# +    int CR_lambdaForm;
-# +
-# +    int CR_allowDoubleJunRem;
-# +
-# +    int CR_timeDilationMode;
-# +
-# +    double CR_timeDilationPar;
-# +
-# +    // CR mode = 2 parameters
-# +    double CR_m2Lambda;
-# +
-# +    double CR_fracGluon;
-# +
-# +    double CR_dLambdaCut;
-# +
-# +    int CR_flipMode;
-# +
-# +    int CR_forceHadronLevel;
-# +
-# +    int BR_remnantMode;
-# +
-#      void dofinish();
+     // Can print the strings of the event in a matlab friendly format
+diff src/Hadronization/StringFragmentation.cc
+--- a/src/Hadronization/StringFragmentation.cc	2024-06-05 16:25:33.790731430 +0100
++++ b/src/Hadronization/StringFragmentation.cc	2024-06-05 16:33:14.780490216 +0100
+@@ -35,6 +35,7 @@
+        throwaway(false), shoving(false), deltay(5.0), tshove(1.0*femtometer),
+        deltat(0.1*femtometer), rCutOff(4.0), gAmplitude(1.0*GeV/femtometer), gExponent(1.0), yCutOff(4.0), lorentz(true), cylinder(false),
+        opHandler(0), maxTries(2),
++#include "ColourReconnection-init.h"
+ #include "StringFragmentation-init.h"
+ {
+ }
+@@ -631,6 +632,30 @@
+                                convert(fragmentationMass));
+         moresettings.push_back("OverlapStrings:baryonSuppression = " + convert(baryonSuppression));
 
-#      // Can print the strings of the event in a matlab friendly format
-# diff src/Hadronization/StringFragmentation.cc
-# --- a/src/Hadronization/StringFragmentation.cc	2024-06-05 16:25:33.790731430 +0100
-# +++ b/src/Hadronization/StringFragmentation.cc	2024-06-05 16:33:14.780490216 +0100
-# @@ -35,6 +35,7 @@
-#         throwaway(false), shoving(false), deltay(5.0), tshove(1.0*femtometer),
-#         deltat(0.1*femtometer), rCutOff(4.0), gAmplitude(1.0*GeV/femtometer), gExponent(1.0), yCutOff(4.0), lorentz(true), cylinder(false),
-#         opHandler(0), maxTries(2),
-# +#include "ColourReconnection-init.h"
-#  #include "StringFragmentation-init.h"
-#  {
-#  }
-# @@ -631,6 +632,30 @@
-#                                 convert(fragmentationMass));
-#          moresettings.push_back("OverlapStrings:baryonSuppression = " + convert(baryonSuppression));
++	//Colour Reconnection parameters
++	moresettings.push_back("ColourReconnection:reconnect = "+ convert(CR_reconnect));
++	moresettings.push_back("ColourReconnection:mode = "+ convert(CR_mode));
++
++	//CR  mode = 1 additional settings:
++	moresettings.push_back("ColourReconnection:m0 = "+ convert(CR_m0));
++	moresettings.push_back("ColourReconnection:junctionCorrection = "+ convert(CR_junctionCorrection));
++	moresettings.push_back("ColourReconnection:nColours = "+ convert(CR_nColours));
++	moresettings.push_back("ColourReconnection:sameNeighbourColours = "+ convert(CR_sameNeighbourColours));
++	moresettings.push_back("ColourReconnection:allowJunctions = "+ convert(CR_allowJunctions));
++	moresettings.push_back("ColourReconnection:lambdaForm = "+ convert(CR_lambdaForm));
++	moresettings.push_back("ColourReconnection:allowDoubleJunRem = "+ convert(CR_allowDoubleJunRem));
++	moresettings.push_back("ColourReconnection:timeDilationMode = "+ convert(CR_timeDilationMode));
++	moresettings.push_back("ColourReconnection:timeDilationPar = "+ convert(CR_timeDilationPar));
++
++	moresettings.push_back("ColourReconnection:forceHadronLevelCR = "+ convert(CR_forceHadronLevel)); //0,1
++	moresettings.push_back("BeamRemnants:remnantMode = "+ convert(BR_remnantMode)); //0,1
++
++	//CR  mode = 2 additional settings:
++	moresettings.push_back("ColourReconnection:m2Lambda = "+ convert(CR_m2Lambda));//0.25 - 16.
++	moresettings.push_back("ColourReconnection:fracGluon = "+ convert(CR_fracGluon));//0.0 - 1.0
++	moresettings.push_back("ColourReconnection:dLambdaCut = "+ convert(CR_dLambdaCut));//0.0 - 10.
++	moresettings.push_back("ColourReconnection:flipMode = "+ convert(CR_flipMode)); //0,1,2,3,4
++
+         // Initialize the OverlapPythia Handler
+         if ( opHandler ) delete opHandler;
+         opHandler = new OverlapPythiaHandler(this,moresettings);
+@@ -642,6 +667,7 @@
 
-# +	//Colour Reconnection parameters
-# +	moresettings.push_back("ColourReconnection:reconnect = "+ convert(CR_reconnect));
-# +	moresettings.push_back("ColourReconnection:mode = "+ convert(CR_mode));
-# +
-# +	//CR  mode = 1 additional settings:
-# +	moresettings.push_back("ColourReconnection:m0 = "+ convert(CR_m0));
-# +	moresettings.push_back("ColourReconnection:junctionCorrection = "+ convert(CR_junctionCorrection));
-# +	moresettings.push_back("ColourReconnection:nColours = "+ convert(CR_nColours));
-# +	moresettings.push_back("ColourReconnection:sameNeighbourColours = "+ convert(CR_sameNeighbourColours));
-# +	moresettings.push_back("ColourReconnection:allowJunctions = "+ convert(CR_allowJunctions));
-# +	moresettings.push_back("ColourReconnection:lambdaForm = "+ convert(CR_lambdaForm));
-# +	moresettings.push_back("ColourReconnection:allowDoubleJunRem = "+ convert(CR_allowDoubleJunRem));
-# +	moresettings.push_back("ColourReconnection:timeDilationMode = "+ convert(CR_timeDilationMode));
-# +	moresettings.push_back("ColourReconnection:timeDilationPar = "+ convert(CR_timeDilationPar));
-# +
-# +	moresettings.push_back("ColourReconnection:forceHadronLevelCR = "+ convert(CR_forceHadronLevel)); //0,1
-# +	moresettings.push_back("BeamRemnants:remnantMode = "+ convert(BR_remnantMode)); //0,1
-# +
-# +	//CR  mode = 2 additional settings:
-# +	moresettings.push_back("ColourReconnection:m2Lambda = "+ convert(CR_m2Lambda));//0.25 - 16.
-# +	moresettings.push_back("ColourReconnection:fracGluon = "+ convert(CR_fracGluon));//0.0 - 1.0
-# +	moresettings.push_back("ColourReconnection:dLambdaCut = "+ convert(CR_dLambdaCut));//0.0 - 10.
-# +	moresettings.push_back("ColourReconnection:flipMode = "+ convert(CR_flipMode)); //0,1,2,3,4
-# +
-#          // Initialize the OverlapPythia Handler
-#          if ( opHandler ) delete opHandler;
-#          opHandler = new OverlapPythiaHandler(this,moresettings);
-# @@ -642,6 +667,7 @@
+ void StringFragmentation::persistentOutput(PersistentOStream & os) const {
+     os
++#include "ColourReconnection-output.h"
+ #include "StringFragmentation-output.h"
+             << fScheme << ounit(stringR0,femtometer) << ounit(stringm0,GeV) << junctionDiquark << alpha << average << stringyCut
+             << ounit(stringpTCut,GeV) << fragmentationMass << baryonSuppression
+@@ -652,6 +678,7 @@
 
-#  void StringFragmentation::persistentOutput(PersistentOStream & os) const {
-#      os
-# +#include "ColourReconnection-output.h"
-#  #include "StringFragmentation-output.h"
-#              << fScheme << ounit(stringR0,femtometer) << ounit(stringm0,GeV) << junctionDiquark << alpha << average << stringyCut
-#              << ounit(stringpTCut,GeV) << fragmentationMass << baryonSuppression
-# @@ -652,6 +678,7 @@
+ void StringFragmentation::persistentInput(PersistentIStream & is, int) {
+     is
++#include "ColourReconnection-input.h"
+ #include "StringFragmentation-input.h"
+             >> fScheme >> iunit(stringR0,femtometer) >> iunit(stringm0,GeV) >> junctionDiquark >> alpha >> average >> stringyCut
+             >> iunit(stringpTCut,GeV) >> fragmentationMass >> baryonSuppression
+@@ -664,6 +691,7 @@
+ // Definition of the static class description member.
 
-#  void StringFragmentation::persistentInput(PersistentIStream & is, int) {
-#      is
-# +#include "ColourReconnection-input.h"
-#  #include "StringFragmentation-input.h"
-#              >> fScheme >> iunit(stringR0,femtometer) >> iunit(stringm0,GeV) >> junctionDiquark >> alpha >> average >> stringyCut
-#              >> iunit(stringpTCut,GeV) >> fragmentationMass >> baryonSuppression
-# @@ -664,6 +691,7 @@
-#  // Definition of the static class description member.
+ void StringFragmentation::Init() {
++#include "ColourReconnection-interfaces.h"
+ #include "StringFragmentation-interfaces.h"
+     static Reference<StringFragmentation,ClusterCollapser> interfaceCollapser
+     ("Collapser",
 
-#  void StringFragmentation::Init() {
-# +#include "ColourReconnection-interfaces.h"
-#  #include "StringFragmentation-interfaces.h"
-#      static Reference<StringFragmentation,ClusterCollapser> interfaceCollapser
-#      ("Collapser",
-
-# """)
+""")
     args=["./configure",
           "--prefix=%s" % base_dir,
           "--with-pythia8=%s" % base_dir,

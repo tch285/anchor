@@ -12,7 +12,6 @@ RUN apt-get update -qq \
  && ${VIRTUAL_ENV}/bin/pip install --no-cache-dir --upgrade pip \
  && ${VIRTUAL_ENV}/bin/pip install Cython six \
  && rm -rf /var/lib/apt/lists/* \
- #  && wget https://herwig.hepforge.org/downloads/herwig-bootstrap \
-#  RUN ls \
-  && chmod +x herwig-bootstrap \
-  && ./herwig-bootstrap -j 15 .
+#  && wget https://herwig.hepforge.org/downloads/herwig-bootstrap \
+ && chmod +x herwig-bootstrap \
+ && ./herwig-bootstrap -j 15 .
