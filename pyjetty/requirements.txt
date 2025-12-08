@@ -4,3 +4,4 @@ pandas
 uproot
 tqdm
 particle
+pyhepmc
