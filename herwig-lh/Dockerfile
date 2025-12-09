@@ -15,3 +15,6 @@ RUN apt-get update -qq \
 #  && wget https://herwig.hepforge.org/downloads/herwig-bootstrap \
  && chmod +x herwig-bootstrap \
  && ./herwig-bootstrap -j 15 .
+COPY entrypoint.sh /opt
+ENTRYPOINT [ "/opt/entrypoint.sh" ]
+CMD [ "/usr/bin/bash" ]
