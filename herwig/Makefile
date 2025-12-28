@@ -1,6 +1,6 @@
 REPO  ?= tch285
 IMAGE ?= herwig
-TAG   ?= 1.0
+TAG   ?= latest
 
 build:
 	docker build -t $(REPO)/$(IMAGE):$(TAG) .

@@ -1,10 +1,10 @@
 FROM ubuntu:22.04
 
-WORKDIR /opt/herwig73
+WORKDIR /opt/herwig
 ENV VIRTUAL_ENV=/opt/.venv
 ENV PATH=${VIRTUAL_ENV}/bin:$PATH
 
-COPY packages packages
+COPY packages entrypoint.sh ./
 
 RUN apt-get update -qq \
  && apt-get -y install $(cat packages) \
@@ -14,4 +14,6 @@ RUN apt-get update -qq \
  && rm -rf /var/lib/apt/lists/* \
  && wget https://herwig.hepforge.org/downloads/herwig-bootstrap \
  && chmod +x herwig-bootstrap \
- && ./herwig-bootstrap -j 4 .
+ && ./herwig-bootstrap -j $(nproc) .
+ENTRYPOINT [ "/opt/herwig/entrypoint.sh" ]
+CMD [ "/usr/bin/bash" ]

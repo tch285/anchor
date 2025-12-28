@@ -4,7 +4,7 @@ WORKDIR /opt/herwig
 ENV VIRTUAL_ENV=/opt/.venv
 ENV PATH=${VIRTUAL_ENV}/bin:$PATH
 
-COPY packages herwig-bootstrap TheP8I.in ./
+COPY packages herwig-bootstrap TheP8I.in entrypoint.sh ./
 
 RUN apt-get update -qq \
  && apt-get -y install $(cat packages) \
@@ -14,7 +14,6 @@ RUN apt-get update -qq \
  && rm -rf /var/lib/apt/lists/* \
 #  && wget https://herwig.hepforge.org/downloads/herwig-bootstrap \
  && chmod +x herwig-bootstrap \
- && ./herwig-bootstrap -j 15 .
-COPY entrypoint.sh /opt
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
+ && ./herwig-bootstrap -j $(nproc) .
+ENTRYPOINT [ "/opt/herwig/entrypoint.sh" ]
 CMD [ "/usr/bin/bash" ]
