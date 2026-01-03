@@ -45,7 +45,7 @@ ADD https://api.github.com/repos/tch285/alian/git/refs/heads/geec latest_commit
 RUN . /etc/profile.d/z00_lmod.sh \
  && ./yasp/yaspenv.sh \
    "module load heppyy bundle/hepbase \
- && git clone --depth 1 --branch geec --single-branch https://github.com/tch285/alian.git \
+ && git clone --depth 1 --branch analysis --single-branch https://github.com/tch285/alian.git \
  && ./alian/install_with_yasp.sh"
 ENTRYPOINT [ "/opt/apps/entrypoint.sh" ]
 CMD [ "/usr/bin/bash", "-l" ]
