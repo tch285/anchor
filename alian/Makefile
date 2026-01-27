@@ -1,6 +1,6 @@
 REPO  ?= tch285
 IMAGE ?= alian
-TAG   ?= latest
+TAG   ?= analysis
 
 build:
 	docker build -t $(REPO)/$(IMAGE):$(TAG) .
