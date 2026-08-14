@@ -10,4 +10,6 @@ RUN dnf install -y epel-release dnf-plugins-core && \
     dnf install -y alice-o2-full-deps alibuild && \
     dnf install -y $(cat /home/packages) && \
     dnf clean all && \
-    rm -rf /var/cache/yum
+    rm -rf /var/cache/yum && \
+    wget -O /usr/local/bin/direnv https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.linux-arm64 && \
+    chmod +x /usr/local/bin/direnv
