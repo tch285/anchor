@@ -12,4 +12,5 @@ RUN dnf install -y epel-release dnf-plugins-core && \
     dnf clean all && \
     rm -rf /var/cache/yum && \
     wget -O /usr/local/bin/direnv https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.linux-arm64 && \
-    chmod +x /usr/local/bin/direnv
+    chmod +x /usr/local/bin/direnv && \
+    pip install pre-commit
