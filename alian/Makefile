@@ -1,6 +1,6 @@
 REPO  ?= tch285
 IMAGE ?= alian
-TAG   ?= analysis
+TAG   ?= geec
 
 build:
 	docker build -t $(REPO)/$(IMAGE):$(TAG) .
